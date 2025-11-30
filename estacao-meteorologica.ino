@@ -1,4 +1,5 @@
 #include <ESP8266WiFi.h> 
+#include <PubSubClient.h>
 #include <DHT.h> 
 #include <SFE_BMP180.h>
 #include <Wire.h>
@@ -6,11 +7,20 @@
 // ----------- WIFI -----------
 #define STASSID "The Internet"
 #define STAPSK "C0hUodP9Gw=="
-const char* server = "api.thingspeak.com";
-String apiKey = "PUS08GJEPMRB3MGB";
 
 const char* ssid = STASSID;
 const char* pass = STAPSK;
+
+// ----------- THINGSPEAK -----------
+const char* server = "api.thingspeak.com";
+String apiKey = "PUS08GJEPMRB3MGB";
+
+// ----------- MQTT (HiveMQ) -----------
+const char* mqtt_server = "broker.hivemq.com";
+const int mqtt_port = 1883;
+
+WiFiClient espClient;
+PubSubClient mqttClient(espClient);
 
 // ----------- DHT11 -----------
 #define DHTPIN D4
@@ -86,6 +96,27 @@ void lerChuva() {
 
 // ----------------------------------------------------
 
+void setupMQTT() {
+  mqttClient.setServer(mqtt_server, mqtt_port);
+}
+
+void reconnectMQTT() {
+  while (!mqttClient.connected()) {
+    String clientId = "ESP8266-" + String(random(0xffff), HEX);
+    if (mqttClient.connect(clientId.c_str())) {
+      Serial.println("MQTT conectado!");
+    } else {
+      delay(2000);
+    }
+  }
+}
+
+void enviarMQTT() {
+  mqttClient.publish("mestrado/iot/aluno/silva/temperatura", String(t).c_str());
+  mqttClient.publish("mestrado/iot/aluno/silva/umidade", String(u).c_str());
+}
+
+// ----------------------------------------------------
 WiFiClient client;
 
 void setup() {
@@ -107,11 +138,19 @@ void setup() {
   
   Serial.println("\nWiFi conectado.");
   Serial.println(WiFi.localIP());
+
+
+  setupMQTT();
 }
 
 // ----------------------------------------------------
 
 void loop() {
+  if (!mqttClient.connected()) {
+    reconnectMQTT();
+  }
+  mqttClient.loop();
+  
   Serial.println("===== Estação Meteorológica IoT =====");
 
   lerDHT();
@@ -140,6 +179,8 @@ void loop() {
     client.print("Content-Length: " + String(postStr.length()) + "\n\n");
     client.print(postStr);
   }
+
+    enviarMQTT();
 
   // SERIAL MONITOR
   Serial.print("Temperatura: "); Serial.println(t);

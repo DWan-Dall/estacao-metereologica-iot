@@ -106,7 +106,7 @@ void reconnectMQTT() {
     if (mqttClient.connect(clientId.c_str())) {
       Serial.println("MQTT conectado!");
     } else {
-      delay(2000);
+      delay(10000);
     }
   }
 }
@@ -193,5 +193,5 @@ void loop() {
   Serial.println("--------------------------------------");
 
   client.stop();
-  delay(2000);
+  delay(10000);
 }

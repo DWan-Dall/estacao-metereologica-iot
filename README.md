@@ -1,7 +1,7 @@
 # 🌦 Estação Meteorológica IoT — ESP8266
 
 Este projeto apresenta o desenvolvimento de uma estação meteorológica IoT de baixo custo, capaz de capturar dados ambientais e enviá-los para plataformas na nuvem como ThingSpeak, MQTT (HiveMQ) e Node-RED.  
-Trabalho final da disciplina **Internet das Coisas — UNIVALI**, elaborado por **Daiane Wan-Dall Splitter da Silva**.
+Trabalho final da disciplina de Mestrado de Computação Aplicada **Internet das Coisas — UNIVALI**.
 
 ---
 
@@ -115,10 +115,11 @@ Campos enviados:
 ├── README.md
 ├── src
 │   └── main.ino
-├── docs
-│   ├── diagrama.fzz
-│   └── dashboard_screenshots.png
-└── LICENSE
+└──  docs
+    ├── diagrama.jpg
+    ├── projeto_finalizado.jpg
+    └── dashboard_screenshots.png
+
 ```
 
 ---
@@ -177,8 +178,7 @@ Exemplo de telemetria:
 
 ## 🚀 Melhorias Futuras
 
-- Publicar pressão, chuva e ppm via MQTT  
-- Integração com InfluxDB + Grafana  
+- Publicar pressão, chuva e ppm via MQTT 
 - Alertas por Telegram/Email quando limites forem excedidos  
 - Versão com BME280 para maior precisão
 

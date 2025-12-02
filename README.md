@@ -113,13 +113,7 @@ Campos enviados:
 ```
 .
 ├── README.md
-├── src
-│   └── main.ino
-└──  docs
-    ├── diagrama.jpg
-    ├── projeto_finalizado.jpg
-    └── dashboard_screenshots.png
-
+└── estacao-meteorologica.ino
 ```
 
 ---
